@@ -37,6 +37,9 @@ family:
     - name: samc21j18au
     - name: samc21n17a
     - name: samc21n18a
+  - name: samd11
+    socs:
+    - name: samd11d14am
   - name: samd20
     socs:
     - name: samd20e14

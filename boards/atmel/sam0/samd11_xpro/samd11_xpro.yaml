@@ -1,0 +1,20 @@
+
+identifier: samd11_xpro
+name: SAM D11 Xplained Pro
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+flash: 256
+ram: 32
+supported:
+  - adc
+  - flash
+  - gpio
+  - i2c
+  - spi
+  - uart
+  - watchdog
+vendor: atmel

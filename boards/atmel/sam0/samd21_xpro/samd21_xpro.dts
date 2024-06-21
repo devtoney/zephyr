@@ -34,7 +34,7 @@
 	leds {
 		compatible = "gpio-leds";
 		led0: led_0 {
-			gpios = <&portb 30 GPIO_ACTIVE_LOW>;
+			gpios = <&porta 8 GPIO_ACTIVE_LOW>;
 			label = "Yellow LED";
 		};
 	};

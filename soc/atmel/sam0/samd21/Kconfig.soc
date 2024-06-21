@@ -11,7 +11,7 @@ config SOC_SERIES_SAMD21
 	  Enable support for Atmel SAMD21 Cortex-M0+ microcontrollers.
 
 config SOC_SERIES
-	default "samd21" if SOC_SERIES_SAMD21
+	default "samd21" if SOC_SERIES_SAMD21	
 
 config SOC_SAMD21E15A
 	bool
