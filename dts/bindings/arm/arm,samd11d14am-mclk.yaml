@@ -1,0 +1,38 @@
+# mclk_samd11d14am.yaml
+# SPDX-License-Identifier: Apache-2.0
+
+description: >
+  Main Clock (MCLK) configuration for the SAMD11D14AM microcontroller
+
+compatible: "atmel,samd11-mclk"
+
+include: base.yaml
+
+properties:
+  reg:
+    required: true
+    type: array
+    description: |
+      Base address and length of the register set.
+    items:
+      - description: Base address of the MCLK register set
+        type: int
+      - description: Length of the register set
+        type: int
+
+  clocks:
+    type: array
+    description: |
+      List of clocks this peripheral depends on.
+
+  clock-names:
+    type: array
+    description: |
+      List of names for the clocks in the `clocks` property.
+
+examples:
+  - |
+    mclk: mclk@40000400 {
+        compatible = "atmel,samd11-mclk";
+        reg = <0x40000400 0x10>;
+    };

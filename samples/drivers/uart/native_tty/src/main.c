@@ -9,12 +9,14 @@
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/uart.h>
-
+// #include "C:/Users/emira/toney/zephyrproject/modules/hal/atmel/asf/sam0/include/samd11/samd11d14am.h"
+// #include "C:/Users/emira/toney/zephyrproject/modules/hal/atmel/asf/sam0/include/samd11/component/sercom.h"
 #include <stdio.h>
 #include <string.h>
+unsigned char send_buf[10] = "hello";
+unsigned char recv_buf[5];
 
-const struct device *uart0 = DEVICE_DT_GET(DT_NODELABEL(uart0));
-const struct device *uart2 = DEVICE_DT_GET(DT_NODELABEL(uart2));
+const struct device *uart0 = DEVICE_DT_GET(DT_NODELABEL(sercom2));
 
 struct uart_config uart_cfg = {
 	.baudrate = 9600,
@@ -39,7 +41,6 @@ void recv_str(const struct device *uart, char *str)
 {
 	char *head = str;
 	char c;
-
 	while (!uart_poll_in(uart, &c)) {
 		*head++ = c;
 	}
@@ -51,41 +52,21 @@ void recv_str(const struct device *uart, char *str)
 int main(void)
 {
 	int rc;
-	char send_buf[64];
-	char recv_buf[64];
-	int i = 10;
-
-	while (i--) {
-		snprintf(send_buf, 64, "Hello from device %s, num %d", uart0->name, i);
-		send_str(uart0, send_buf);
-		/* Wait some time for the messages to arrive to the second uart. */
-		k_sleep(K_MSEC(100));
-		recv_str(uart2, recv_buf);
-
-		k_sleep(K_MSEC(1000));
+	if (!device_is_ready(uart0)) {
+		printk("UART device %s not ready\n", uart0->name);
+		return -1;
 	}
-
-	uart_cfg.baudrate = 9600;
-	printk("\nChanging baudrate of both uart devices to %d!\n\n", uart_cfg.baudrate);
-
 	rc = uart_configure(uart0, &uart_cfg);
 	if (rc) {
 		printk("Could not configure device %s", uart0->name);
 	}
-	rc = uart_configure(uart2, &uart_cfg);
-	if (rc) {
-		printk("Could not configure device %s", uart2->name);
-	}
-
-	i = 10;
-	while (i--) {
-		snprintf(send_buf, 64, "Hello from device %s, num %d", uart0->name, i);
-		send_str(uart0, send_buf);
-		/* Wait some time for the messages to arrive to the second uart. */
-		k_sleep(K_MSEC(100));
-		recv_str(uart2, recv_buf);
-
-		k_sleep(K_MSEC(1000));
+	while (1) {
+		  // recv_str(uart0, recv_buf);
+		  
+		   //snprintf(send_buf, 64, "Hello from device %s, num %d", uart0->name, i);
+	      send_str(uart0, send_buf);
+		  k_sleep(K_MSEC(1000));
+		   
 	}
 
 	return 0;

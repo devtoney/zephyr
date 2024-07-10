@@ -6,36 +6,37 @@
 
  /dts-v1/;
  #include <freq.h>
+ #include <atmel/samd1x.dtsi>
  #include <atmel/samd11.dtsi>
- #include <atmel/samx2xx18.dtsi>
+ //#include <atmel/samx2xx18.dtsi>
  #include "samd11_xpro-pinctrl.dtsi"
  #include <zephyr/dt-bindings/input/input-event-codes.h>
  
  / {
-	 model = "SAM D20 Xplained Pro";
-	 compatible = "samd20,xpro", "atmel,samd20j18", "atmel,samd20";
+	 model = "SAM D11 Xplained Pro";
+	 compatible = "samd11,xpro", "atmel,samd11d14am", "atmel,samd11";
  
 	 chosen {
-		 zephyr,console = &sercom3;
-		 zephyr,shell-uart = &sercom3;
+		 zephyr,console = &sercom2;
+		 zephyr,shell-uart = &sercom2;
 		 zephyr,sram = &sram0;
 		 zephyr,flash = &flash0;
 	 };
  
 	 /* These aliases are provided for compatibility with samples */
 	 aliases {
-		 led0 = &yellow_led;
+		 led0 = &led0;
 		 sw0 = &user_button;
-		 i2c-0 = &sercom2;
+		 i2c-0 = &sercom0;
 	 };
  
 	 leds {
-		 compatible = "gpio-leds";
-		 yellow_led: led_0 {
-			 gpios = <&porta 16  (GPIO_ACTIVE_LOW)>;
-			 label = "LED0";
-		 };
-	 };
+		compatible = "gpio-leds";
+		led0: led_0 {
+			gpios = <&porta 16 GPIO_ACTIVE_LOW>;
+			label = "LED0";
+		};
+	};
  
 	 buttons {
 		 compatible = "gpio-keys";
@@ -49,10 +50,11 @@
  
  &cpu0 {
 	 clock-frequency = <DT_FREQ_M(48)>;
+	 status = "okay";
  };
  
- &sercom0 {
-	 status = "okay";
+ &sercom1 {
+	// status = "okay";
 	 compatible = "atmel,sam0-spi";
 	 dipo = <0>;
 	 dopo = <1>;
@@ -60,42 +62,37 @@
 	 #size-cells = <0>;
 	 cs-gpios = <&porta 5 GPIO_ACTIVE_LOW>;
  
-	 pinctrl-0 = <&sercom0_spi_default>;
+	 pinctrl-0 = <&sercom1_spi_default>;
 	 pinctrl-names = "default";
+	 status = "disabled";
+
  };
  
- &sercom2 {
-	 status = "okay";
+ &sercom0 {
+	// status = "okay";
 	 compatible = "atmel,sam0-i2c";
 	 clock-frequency = <I2C_BITRATE_FAST>;
 	 #address-cells = <1>;
 	 #size-cells = <0>;
  
-	 pinctrl-0 = <&sercom2_i2c_default>;
+	 pinctrl-0 = <&sercom0_i2c_default>;
 	 pinctrl-names = "default";
+	 status = "disabled";
  };
  
- &sercom3 {
+ &sercom2 {
 	 status = "okay";
 	 compatible = "atmel,sam0-uart";
-	 current-speed = <115200>;
-	 rxpo = <3>;
-	 txpo = <1>;
+	 current-speed = <9600>;
+	 rxpo = <3>;  //pin 11
+	 txpo = <2>;  //pin 10
  
-	 pinctrl-0 = <&sercom3_uart_default>;
+
+	 pinctrl-0 = <&sercom2_uart_default>;
 	 pinctrl-names = "default";
+	// status = "okay";
  };
  
-//  &sercom4 {
-// 	 status = "okay";
-// 	 compatible = "atmel,sam0-uart";
-// 	 current-speed = <115200>;
-// 	 rxpo = <1>;
-// 	 txpo = <0>;
- 
-// 	 pinctrl-0 = <&sercom4_uart_default>;
-// 	 pinctrl-names = "default";
-//  };
  
  &flash0 {
 	 partitions {

@@ -526,6 +526,9 @@ static int uart_sam0_init(const struct device *dev)
 	PM->APBCMASK.reg |= cfg->pm_apbcmask;
 #endif
 
+	  /* Disable USART before configuration */
+    //usart->CTRLA.reg &= ~SERCOM_USART_CTRLA_ENABLE;
+    //wait_synchronization(usart);
 	/* Disable all USART interrupts */
 	usart->INTENCLR.reg = SERCOM_USART_INTENCLR_MASK;
 	wait_synchronization(usart);
@@ -656,11 +659,13 @@ static void uart_sam0_poll_out(const struct device *dev, unsigned char c)
 
 	SercomUsart * const usart = config->regs;
 
-	while (!usart->INTFLAG.bit.DRE) {
-	}
+	//usart->CTRLB.bit.TXEN = 1;
+	// while (!usart->INTFLAG.bit.DRE) {
+	// }
 
 	/* send a character */
 	usart->DATA.reg = c;
+
 }
 
 static int uart_sam0_err_check(const struct device *dev)
