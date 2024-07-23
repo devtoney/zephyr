@@ -27,7 +27,10 @@
 	 aliases {
 		 led0 = &led0;
 		 sw0 = &user_button;
-		 i2c-0 = &sercom0;
+		 serial0 = &sercom0;
+         serial1 = &sercom2;
+		 adc0 = &adc;
+		 //i2c-0 = &sercom2;
 	 };
  
 	 leds {
@@ -53,44 +56,60 @@
 	 status = "okay";
  };
  
+
+ &adc {
+	#address-cells = <1>;
+	#size-cells = <0>;
+    status = "okay";
+	channel@8 {
+		reg = <8>;
+		zephyr,gain = "ADC_GAIN_1";
+		zephyr,reference = "ADC_REF_INTERNAL";
+		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
+		zephyr,resolution = <10>;
+		zephyr,input-positive = <10>;
+	};
+};
+
+
  &sercom1 {
-	// status = "okay";
+	 status = "okay";
 	 compatible = "atmel,sam0-spi";
-	 dipo = <0>;
-	 dopo = <1>;
+	 clock-frequency = <1000000>;
+	 dipo = <2>;
+	 dopo = <3>;
 	 #address-cells = <1>;
 	 #size-cells = <0>;
 	 cs-gpios = <&porta 5 GPIO_ACTIVE_LOW>;
  
 	 pinctrl-0 = <&sercom1_spi_default>;
 	 pinctrl-names = "default";
-	 status = "disabled";
 
- };
- 
- &sercom0 {
-	// status = "okay";
-	 compatible = "atmel,sam0-i2c";
-	 clock-frequency = <I2C_BITRATE_FAST>;
-	 #address-cells = <1>;
-	 #size-cells = <0>;
- 
-	 pinctrl-0 = <&sercom0_i2c_default>;
-	 pinctrl-names = "default";
-	 status = "disabled";
  };
  
  &sercom2 {
-	 status = "okay";
+	status = "okay";
+	compatible = "atmel,sam0-uart";
+	current-speed = <115200>;
+	rxpo = <3>;  //pin 25
+	txpo = <2>;  //pin 24
+
+
+	pinctrl-0 = <&sercom2_uart_default>;
+	pinctrl-names = "default";
+ };
+ 
+ &sercom0 {
+	 status = "disabled";
 	 compatible = "atmel,sam0-uart";
-	 current-speed = <9600>;
+	 current-speed = <115200>;
 	 rxpo = <3>;  //pin 11
-	 txpo = <2>;  //pin 10
+	 txpo = <1>;  //pin 10
  
 
-	 pinctrl-0 = <&sercom2_uart_default>;
+	 pinctrl-0 = <&sercom0_uart_default>;
 	 pinctrl-names = "default";
-	// status = "okay";
+	
  };
  
  

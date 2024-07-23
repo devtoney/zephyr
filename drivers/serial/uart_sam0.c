@@ -659,13 +659,11 @@ static void uart_sam0_poll_out(const struct device *dev, unsigned char c)
 
 	SercomUsart * const usart = config->regs;
 
-	//usart->CTRLB.bit.TXEN = 1;
-	// while (!usart->INTFLAG.bit.DRE) {
-	// }
+	while (!usart->INTFLAG.bit.DRE) {
+	}
 
 	/* send a character */
 	usart->DATA.reg = c;
-
 }
 
 static int uart_sam0_err_check(const struct device *dev)

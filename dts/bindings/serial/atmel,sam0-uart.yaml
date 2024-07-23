@@ -46,7 +46,7 @@ properties:
       hardware being used. This controls both the transmit pins and if
       hardware flow control is used.
 
-      SAMD20:
+      SAMD20/D11:
 
       +-------+---------------+
       | Value | TX Pin        |
